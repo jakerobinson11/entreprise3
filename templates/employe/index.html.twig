@@ -1,9 +1,24 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Liste des Employés{% endblock %}
-
-{% for employe in employes %}
-
 {% block body %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Nom</th>
+      <th scope="col">Prenom</th>
+      <th scope="col">Entreprise</th>
+      <th scope="col">Salaire</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for employe in mpls %}
+    <tr class="table-active">
+      <td>{{employe.nom}}</td>
+      <td>{{employe.prenom}}</td>
+      <td>{{employe.service}}</td>
+      <td>{{employe.salaire}}</td>
+    </tr>
+{% endfor %}
 
 {% endblock %}
