@@ -33,10 +33,29 @@ class EmployeController extends AbstractController
             $manager = $doctrine->getManager();
             $manager->persist($employe);
             $manager->flush();
-            $this->redirectToRoute('add_employe');
+            return $this->redirectToRoute('add_employe');
         }
         return $this->render('employe/add.html.twig', [
             "formulaire" => $form->createView()
+        ]);
+    }
+
+    // modification d'un employe
+
+    #[Route('/employe/edit/{id}', name: 'edit_employe')]
+    public function edit(ManagerRegistry $doctrine, Request $request, Employe $employe)
+    {
+        /* dd($employe); */
+        $form = $this->createForm(EmployeType::class, $employe);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($employe);
+            $manager->flush();
+            return $this->redirectToRoute("app_employe");
+        }
+        return $this->render("employe/edit.html.twig", [
+            "formulaireEdit" => $form->createView()
         ]);
     }
 }

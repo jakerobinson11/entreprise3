@@ -9,6 +9,7 @@
       <th scope="col">Prenom</th>
       <th scope="col">Entreprise</th>
       <th scope="col">Salaire</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -18,6 +19,8 @@
       <td>{{employe.prenom}}</td>
       <td>{{employe.service}}</td>
       <td>{{employe.salaire}}</td>
+      <td><a href="{{path('edit_employe',{'id':employe.id})}}">Modifier l'employés</a></td>
+      <td><a href="{{path('remove_employe',{'id':employe.id})}}">Supprimer l'employés</a></td>
     </tr>
 {% endfor %}
 
