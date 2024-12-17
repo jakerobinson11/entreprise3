@@ -22,31 +22,38 @@ class EmployeController extends AbstractController
             "mpls" => $employes
         ]);
     }
-
+    #[Route('/employe/edit{id}', name: 'edit_employe')]
     #[Route('/employe/add', name: 'add_employe')]
-    public function add(ManagerRegistry $doctrine, Request $request)
+    public function add(ManagerRegistry $doctrine, Request $request, Employe $employe=null)
     {
-        $employe = new Employe();
+        if(!$employe){
+            $employe = new Employe();
+        }
         $form = $this->createForm(EmployeType::class, $employe);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $doctrine->getManager();
             $manager->persist($employe);
             $manager->flush();
-            return $this->redirectToRoute('add_employe');
+            return $this->redirectToRoute('app_employe');
         }
+        $vrai = false;
+    if($employe->getId() != null){
+        $vrai = true;
+    }
         return $this->render('employe/add.html.twig', [
-            "formulaire" => $form->createView()
+            "formulaire" => $form->createView(),
+            "vrai" => $vrai
         ]);
     }
 
     // modification d'un employe
 
-    #[Route('/employe/edit/{id}', name: 'edit_employe')]
+    /* #[Route('/employe/edit/{id}', name: 'edit_employe')]
     public function edit(ManagerRegistry $doctrine, Request $request, Employe $employe)
-    {
+    { */
         /* dd($employe); */
-        $form = $this->createForm(EmployeType::class, $employe);
+       /*  $form = $this->createForm(EmployeType::class, $employe);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $doctrine->getManager();
@@ -57,5 +64,14 @@ class EmployeController extends AbstractController
         return $this->render("employe/edit.html.twig", [
             "formulaireEdit" => $form->createView()
         ]);
+    } */
+
+    #[Route('/employe/supprimer/{id}', name: 'remove_employe')]
+    public function supprimer(ManagerRegistry $doctrine, Employe $employe)
+    {
+        $repository = $doctrine->getManager();
+        $repository->remove($employe);
+        $repository->flush();
+        return $this->redirectToRoute("app_employe");
     }
 }
